@@ -3,15 +3,19 @@ package com.iscmastersolutions.app
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rocketreserver.databinding.LaunchItemBinding
+import coil.api.load
+import com.iscmastersolutions.app.databinding.LaunchItemBinding
 
-class LaunchListAdapter() :
+class LaunchListAdapter(val launches: List<LaunchListQuery.Launch>) :
     RecyclerView.Adapter<LaunchListAdapter.ViewHolder>() {
+
+    var onEndOfListReached: (() -> Unit)? = null
+    var onItemClicked: ((launch: LaunchListQuery.Launch) -> Unit)? = null
 
     class ViewHolder(val binding: LaunchItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun getItemCount(): Int {
-        return 0
+        return launches.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,6 +23,21 @@ class LaunchListAdapter() :
         return ViewHolder(binding)
     }
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val launch = launches[position]
+        holder.binding.site.text = launch.site ?: ""
+        holder.binding.missionName.text = launch.mission?.name
+        holder.binding.missionPatch.load(launch.mission?.missionPatch) {
+            placeholder(R.drawable.ic_placeholder)
+        }
+
+        if (position == launches.size - 1) {
+            onEndOfListReached?.invoke()
+        }
+
+        holder.binding.root.setOnClickListener {
+            onItemClicked?.invoke(launch)
+        }
     }
 }

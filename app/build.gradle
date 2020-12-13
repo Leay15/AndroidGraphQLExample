@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id("com.apollographql.apollo").version("$apollo_version")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -9,13 +10,18 @@ android {
 
     defaultConfig {
         applicationId "com.iscmastersolutions.app"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
 
     buildTypes {
         release {
