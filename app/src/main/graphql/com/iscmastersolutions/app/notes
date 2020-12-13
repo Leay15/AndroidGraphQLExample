@@ -1,0 +1,1 @@
+gradlew downloadApolloSchema --endpoint=https://apollo-fullstack-tutorial.herokuapp.com/graphql --schema=app/src/main/graphql/com/example/schema.json
